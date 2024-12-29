@@ -1,4 +1,4 @@
-#!/bin/sh -l
+#!/bin/sh
 
 version_core=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
 library_name=$(awk -F'=' '/^LIBNAME:=/{print $2}' Makefile)

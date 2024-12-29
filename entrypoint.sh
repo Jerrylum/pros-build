@@ -1,7 +1,14 @@
 #!/bin/sh
 
-mkdir -p /arm-none-eabi-toolchain
-tar -xJf /arm-none-eabi-toolchain.tar.xz -C /arm-none-eabi-toolchain --strip-components=1 
+echo "--- Extract toolchain ---"
+
+if [ ! -d "/arm-none-eabi-toolchain" ]; then
+  mkdir -p /arm-none-eabi-toolchain
+  tar -xJf /arm-none-eabi-toolchain.tar.xz -C /arm-none-eabi-toolchain --strip-components=1 
+fi
+echo "/arm-none-eabi-toolchain" | tee -a $GITHUB_PATH
+
+echo "--- Build Info ---"
 
 version_core=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
 library_name=$(awk -F'=' '/^LIBNAME:=/{print $2}' Makefile)
@@ -40,8 +47,8 @@ echo "version=${version}" | tee -a $GITHUB_OUTPUT
 echo "artifact_name=${artifact_name}" | tee -a $GITHUB_OUTPUT
 
 # Run the build command
+echo "--- Build ---"
+
 echo "Running build command: pros make all template VERSION=${version} ${build_args}"
-echo "$PATH"
-ls -all /arm-none-eabi-toolchain/bin
-which arm-none-eabi-g++
+
 pros make all template VERSION=${version} ${build_args}

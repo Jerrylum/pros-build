@@ -13,13 +13,13 @@ RUN tar -xJf /tmp/gcc-arm-none-eabi.tar.xz -C /tmp/gcc-arm-none-eabi --strip-com
 # -- Install packages --
 FROM alpine:latest AS final
 
-RUN apk add --no-cache jq python3 pipx
+RUN apk add --no-cache jq python3 pipx make
 
 RUN pipx install pros-cli==3.5.4
-ENV PATH=/root/.local/bin:$PATH
+ENV PATH="/root/.local/bin:$PATH"
 
-COPY --from=download-toolchain /tmp/gcc-arm-none-eabi /usr/local/gcc-arm-none-eabi
-ENV PATH=/usr/local/gcc-arm-none-eabi/bin:$PATH
+COPY --from=download-toolchain /tmp/gcc-arm-none-eabi /arm-none-eabi-toolchain
+ENV PATH="/arm-none-eabi-toolchain/bin:$PATH"
 
 # -- Verify toolchain --
 # RUN python3 --version

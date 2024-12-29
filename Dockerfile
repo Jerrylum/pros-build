@@ -22,10 +22,10 @@ COPY --from=download-toolchain /tmp/gcc-arm-none-eabi /usr/local/gcc-arm-none-ea
 ENV PATH=/usr/local/gcc-arm-none-eabi/bin:$PATH
 
 # -- Verify toolchain --
-RUN python3 --version
-RUN pros --version
-RUN arm-none-eabi-g++ --version
-RUN arm-none-eabi-gcc --version
+# RUN python3 --version
+# RUN pros --version
+# RUN arm-none-eabi-g++ --version
+# RUN arm-none-eabi-gcc --version
 
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY entrypoint.sh /entrypoint.sh

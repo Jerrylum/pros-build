@@ -9,6 +9,7 @@ if [ ! -d "$TOOLCHAIN_DIR" ]; then
   tar -xJf /arm-none-eabi-toolchain.tar.xz -C $TOOLCHAIN_DIR --strip-components=1 
 fi
 echo "$TOOLCHAIN_DIR/bin" >> $GITHUB_PATH
+export PATH="$TOOLCHAIN_DIR/bin:$PATH"
 
 echo "--- Build Info ---"
 

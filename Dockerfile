@@ -18,7 +18,7 @@ RUN apk add --no-cache python3
 FROM python3 AS install-pros-cli
 
 RUN apk add --no-cache pipx
-RUN pipx install pros-cli
+RUN pipx install pros-cli==3.5.4
 ENV PATH=/root/.local/bin:$PATH
 
 COPY --from=download-toolchain /tmp/gcc-arm-none-eabi /usr/local/gcc-arm-none-eabi

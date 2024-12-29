@@ -1,16 +1,21 @@
 # action.yml
-name: 'PROS Build Action'
-description: 'Greet someone and record the time'
+name: "PROS Build Action"
+description: "Greet someone and record the time"
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
+  build_args:
+    description: "The arguments to pass to the build command"
+    required: false
+    default: ""
 outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  version_core:
+    description: "The version core, for example 1.0.0"
+  library_name:
+    description: 'The library name, for example "pros-template"'
+  version:
+    description: 'The version, for example "1.0.0+123456"'
+  artifact_name:
+    description: 'The artifact name, for example "pros-template@1.0.0+123456"'
 runs:
-  using: 'docker'
-  image: 'docker://ghcr.io/jerrylum/pros-build:main' # TODO: change to the latest tag
-  args:
-    - ${{ inputs.who-to-greet }}
+  using: "docker"
+  image: "docker://ghcr.io/jerrylum/pros-build:main" # TODO: change to the latest tag
+

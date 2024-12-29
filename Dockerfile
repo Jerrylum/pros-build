@@ -9,11 +9,12 @@ RUN wget --no-verbose https://developer.arm.com/-/media/Files/downloads/gnu-rm/1
 RUN mkdir -p /tmp/gcc-arm-none-eabi
 RUN tar -xjf /tmp/gcc-arm-none-eabi.tar.bz2 -C /tmp/gcc-arm-none-eabi --strip-components=1 
 
+# Installs packages
 FROM alpine:latest AS python3
 
-# Installs packages
 RUN apk add --no-cache python3
 
+# Installs pros-cli
 FROM python3 AS install-pros-cli
 
 RUN apk add --no-cache pipx

@@ -11,6 +11,6 @@ outputs:
     description: 'The time we greeted you'
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/Jerrylum/pros-build:main' # TODO: change to the latest tag
+  image: 'docker://ghcr.io/jerrylum/pros-build:main' # TODO: change to the latest tag
   args:
     - ${{ inputs.who-to-greet }}

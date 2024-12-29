@@ -8,9 +8,9 @@ inputs:
     default: ""
 outputs:
   version_core:
-    description: "The version core, for example 1.0.0"
+    description: "The version name from the Makefile, for example 1.0.0"
   library_name:
-    description: 'The library name, for example "pros-template"'
+    description: 'The library name from the Makefile, for example "pros-template"'
   version:
     description: 'The version, for example "1.0.0+123456"'
   artifact_name:

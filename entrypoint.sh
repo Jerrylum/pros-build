@@ -1,5 +1,7 @@
 #!/bin/sh
 
+tar -xJf /arm-none-eabi-toolchain.tar.xz -C /arm-none-eabi-toolchain --strip-components=1 
+
 version_core=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
 library_name=$(awk -F'=' '/^LIBNAME:=/{print $2}' Makefile)
 

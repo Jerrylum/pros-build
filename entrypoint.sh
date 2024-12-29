@@ -39,4 +39,6 @@ echo "artifact_name=${artifact_name}" | tee -a $GITHUB_OUTPUT
 # Run the build command
 echo "Running build command: pros make all template VERSION=${version} ${build_args}"
 echo "$PATH"
+ls -all /arm-none-eabi-toolchain/bin
+which arm-none-eabi-g++
 pros make all template VERSION=${version} ${build_args}

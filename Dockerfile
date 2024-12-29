@@ -5,9 +5,9 @@
 FROM alpine:latest AS download-toolchain
 
 RUN apk add --no-cache wget
-RUN wget --no-verbose "https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz" -O /tmp/gcc-arm-none-eabi.tar.bz2
+RUN wget --no-verbose "https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz" -O /tmp/gcc-arm-none-eabi.tar.xz
 RUN mkdir -p /tmp/gcc-arm-none-eabi
-RUN tar -xjf /tmp/gcc-arm-none-eabi.tar.bz2 -C /tmp/gcc-arm-none-eabi --strip-components=1 
+RUN tar -xJf /tmp/gcc-arm-none-eabi.tar.xz -C /tmp/gcc-arm-none-eabi --strip-components=1 
 
 # Installs packages
 FROM alpine:latest AS final

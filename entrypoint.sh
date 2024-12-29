@@ -38,4 +38,5 @@ echo "artifact_name=${artifact_name}" | tee -a $GITHUB_OUTPUT
 
 # Run the build command
 echo "Running build command: pros make all template VERSION=${version} ${build_args}"
+echo "$PATH"
 pros make all template VERSION=${version} ${build_args}

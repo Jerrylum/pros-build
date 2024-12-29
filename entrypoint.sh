@@ -2,11 +2,13 @@
 
 echo "--- Extract toolchain ---"
 
-if [ ! -d "/arm-none-eabi-toolchain" ]; then
-  mkdir -p /arm-none-eabi-toolchain
-  tar -xJf /arm-none-eabi-toolchain.tar.xz -C /arm-none-eabi-toolchain --strip-components=1 
+TOOLCHAIN_DIR="$GITHUB_WORKSPACE/toolchain"
+
+if [ ! -d "$TOOLCHAIN_DIR" ]; then
+  mkdir -p $TOOLCHAIN_DIR
+  tar -xJf /arm-none-eabi-toolchain.tar.xz -C $TOOLCHAIN_DIR --strip-components=1 
 fi
-echo "/arm-none-eabi-toolchain" >> $GITHUB_PATH
+echo "$TOOLCHAIN_DIR/bin" >> $GITHUB_PATH
 
 echo "--- Build Info ---"
 

@@ -20,12 +20,10 @@ else
   # $GITHUB_SHA might be the merge commit SHA, which is not preferred
   # See: https://stackoverflow.com/questions/68061051/get-commit-sha-in-github-actions
   # This should also work for forked pull requests
-  if [[ -n "${{ github.event.pull_request.head.sha }}" ]]; then
-    SHA="${{ github.event.pull_request.head.sha }}"
-  else
-    SHA="${GITHUB_SHA}"
+  if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+    GITHUB_SHA=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha)
   fi
-  build_id=${SHA:0:6}
+  build_id=${GITHUB_SHA:0:6}
 
   # Set the version to the tag version plus the build identifier
   version="${version_core}+${build_id}"

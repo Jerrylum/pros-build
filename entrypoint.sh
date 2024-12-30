@@ -2,6 +2,8 @@
 
 echo "::group::Build Info"
 
+time_start=$SECONDS
+
 # Use make -p to get make's internal database and extract VERSION with flexible pattern
 make_output=$(make -p)
 version_core=$(echo "$make_output" | awk -F'= *' '/^VERSION .*/ {print $2}')
@@ -41,21 +43,29 @@ echo "library_name=${library_name}" | tee -a $GITHUB_OUTPUT
 echo "version=${version}" | tee -a $GITHUB_OUTPUT
 echo "artifact_name=${artifact_name}" | tee -a $GITHUB_OUTPUT
 echo "artifact_path=${artifact_path}" | tee -a $GITHUB_OUTPUT
+
+time_end=$SECONDS
+echo "Time taken: $((time_end - time_start)) seconds"
+
 echo "::endgroup::"
 echo "::group::Build"
 
 echo "Running build command: pros make all template VERSION=${version} ${build_args}"
 
-build_start_time=$SECONDS
-pros make all template VERSION=${version} ${build_args}
-build_end_time=$SECONDS
+# TODO: Add LICENSE, add README
 
-echo "Build time: $((build_end_time - build_start_time)) seconds"
+time_start=$SECONDS
+
+pros make all template VERSION=${version} ${build_args}
+
+time_end=$SECONDS
+
+echo "Build time: $((time_end - time_start)) seconds"
 
 echo "::endgroup::"
 
 echo "::group::Unzip Template"
 
-pros unzip ${artifact_name}.zip -d ${artifact_path}
+unzip ${artifact_name}.zip -d ${artifact_path}
 
 echo "::endgroup::"

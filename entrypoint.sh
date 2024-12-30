@@ -1,20 +1,11 @@
 #!/bin/sh
 
-echo "--- Extract toolchain ---"
+echo "::group::Build Info"
 
-TOOLCHAIN_DIR="$GITHUB_WORKSPACE/toolchain"
-
-if [ ! -d "$TOOLCHAIN_DIR" ]; then
-  mkdir -p $TOOLCHAIN_DIR
-  tar -xJf /arm-none-eabi-toolchain.tar.xz -C $TOOLCHAIN_DIR --strip-components=1 
-fi
-echo "$TOOLCHAIN_DIR/bin" >> $GITHUB_PATH
-export PATH="$TOOLCHAIN_DIR/bin:$PATH"
-
-echo "--- Build Info ---"
-
-version_core=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
-library_name=$(awk -F'=' '/^LIBNAME:=/{print $2}' Makefile)
+# Use make -p to get make's internal database and extract VERSION with flexible pattern
+make_output=$(make -p)
+version_core=$(echo "$make_output" | awk -F'= *' '/^VERSION .*/ {print $2}')
+library_name=$(echo "$make_output" | awk -F'= *' '/^LIBNAME .*/ {print $2}')
 
 # If a new tag is pushed
 if [[ $GITHUB_REF == refs/tags/* ]]; then
@@ -42,16 +33,29 @@ else
   version="${version_core}+${build_id}"
 fi
 artifact_name="${library_name}@${version}"
+artifact_path="/${artifact_name}"
 
 # Use tee to write to the output file and stdout
 echo "version_core=${version_core}" | tee -a $GITHUB_OUTPUT
 echo "library_name=${library_name}" | tee -a $GITHUB_OUTPUT
 echo "version=${version}" | tee -a $GITHUB_OUTPUT
 echo "artifact_name=${artifact_name}" | tee -a $GITHUB_OUTPUT
-
-# Run the build command
-echo "--- Build ---"
+echo "artifact_path=${artifact_path}" | tee -a $GITHUB_OUTPUT
+echo "::endgroup::"
+echo "::group::Build"
 
 echo "Running build command: pros make all template VERSION=${version} ${build_args}"
 
+build_start_time=$SECONDS
 pros make all template VERSION=${version} ${build_args}
+build_end_time=$SECONDS
+
+echo "Build time: $((build_end_time - build_start_time)) seconds"
+
+echo "::endgroup::"
+
+echo "::group::Unzip Template"
+
+pros unzip ${artifact_name}.zip -d ${artifact_path}
+
+echo "::endgroup::"

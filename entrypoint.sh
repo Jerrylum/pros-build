@@ -4,12 +4,8 @@ echo "::group::Build Info"
 
 time_start=$(date +%s)
 
-echo "1 current time: $(date +%s)"
-
 version_core=$(cat Makefile | awk -F'= *' '/^VERSION.*=.*/ {print $2}')
 library_name=$(cat Makefile | awk -F'= *' '/^LIBNAME.*=.*/ {print $2}')
-
-echo "2 current time: $(date +%s)"
 
 # If a new tag is pushed
 if [[ $GITHUB_REF == refs/tags/* ]]; then
@@ -37,9 +33,7 @@ else
   version="${version_core}+${build_id}"
 fi
 artifact_name="${library_name}@${version}"
-artifact_path="/${artifact_name}"
-
-echo "3 current time: $(date +%s)"
+artifact_path="/artifacts/${artifact_name}"
 
 # Use tee to write to the output file and stdout
 echo "version_core=${version_core}" | tee -a $GITHUB_OUTPUT
@@ -58,7 +52,6 @@ echo "::group::Build"
 
 time_start=$(date +%s)
 
-echo "version: ${version}"
 echo "build_args: ${INPUT_BUILD_ARGS}"
 
 make VERSION=${version} ${INPUT_BUILD_ARGS}
@@ -72,5 +65,6 @@ echo "::endgroup::"
 echo "::group::Unzip Template"
 
 unzip ${artifact_name}.zip -d ${artifact_path}
+echo $artifact_path >> $GITHUB_PATH
 
 echo "::endgroup::"

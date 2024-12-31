@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "::group::Build Info"
+echo "::group::Project Info"
 
 time_start=$(date +%s)
 
@@ -64,6 +64,7 @@ echo "::endgroup::"
 
 echo "::group::Unzip Template"
 
+mkdir -p ${artifact_path}
 unzip ${artifact_name}.zip -d ${artifact_path}
 echo $artifact_path >> $GITHUB_PATH
 

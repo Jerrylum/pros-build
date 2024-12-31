@@ -33,7 +33,7 @@ else
   version="${version_core}+${build_id}"
 fi
 artifact_name="${library_name}@${version}"
-artifact_path="/${HOME}/artifacts/${artifact_name}"
+artifact_path="${HOME}/artifacts/${artifact_name}"
 
 # Use tee to write to the output file and stdout
 echo "version_core=${version_core}" | tee -a $GITHUB_OUTPUT

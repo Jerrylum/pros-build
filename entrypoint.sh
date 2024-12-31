@@ -6,10 +6,8 @@ time_start=$(date +%s)
 
 echo "1 current time: $(date +%s)"
 
-# Use make -p to get make's internal database and extract variables with flexible pattern
-make_output=$(make -p)
-version_core=$(echo "$make_output" | awk -F'= *' '/^VERSION .*/ {print $2}')
-library_name=$(echo "$make_output" | awk -F'= *' '/^LIBNAME .*/ {print $2}')
+version_core=$(cat Makefile | awk -F'= *' '/^VERSION.*=.*/ {print $2}')
+library_name=$(cat Makefile | awk -F'= *' '/^LIBNAME.*=.*/ {print $2}')
 
 echo "2 current time: $(date +%s)"
 

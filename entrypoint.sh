@@ -4,7 +4,7 @@ echo "::group::Build Info"
 
 time_start=$SECONDS
 
-# Use make -p to get make's internal database and extract VERSION with flexible pattern
+# Use make -p to get make's internal database and extract variables with flexible pattern
 make_output=$(make -p)
 version_core=$(echo "$make_output" | awk -F'= *' '/^VERSION .*/ {print $2}')
 library_name=$(echo "$make_output" | awk -F'= *' '/^LIBNAME .*/ {print $2}')
@@ -56,7 +56,7 @@ echo "Running build command: pros make all template VERSION=${version} ${build_a
 
 time_start=$SECONDS
 
-make all template VERSION=${version} ${build_args}
+make VERSION=${version} ${build_args}
 
 time_end=$SECONDS
 

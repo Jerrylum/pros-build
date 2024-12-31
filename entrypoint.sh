@@ -54,6 +54,9 @@ echo "::group::Build"
 
 time_start=$SECONDS
 
+echo "version: ${version}"
+echo "build_args: ${build_args}"
+
 make VERSION=${version} ${build_args}
 
 time_end=$SECONDS

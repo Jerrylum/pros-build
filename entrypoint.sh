@@ -33,7 +33,7 @@ else
   version="${version_core}+${build_id}"
 fi
 artifact_name="${library_name}@${version}"
-artifact_path="${GITHUB_WORKSPACE}/artifacts/${artifact_name}"
+artifact_path="${artifact_name}"
 
 # Use tee to write to the output file and stdout
 echo "version_core=${version_core}" | tee -a $GITHUB_OUTPUT
@@ -64,8 +64,6 @@ echo "::endgroup::"
 
 echo "::group::Unzip Template"
 
-mkdir -p ${artifact_path}
 unzip ${artifact_name}.zip -d ${artifact_path}
-echo $artifact_path >> $GITHUB_PATH
 
 echo "::endgroup::"

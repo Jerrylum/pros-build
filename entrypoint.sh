@@ -4,10 +4,14 @@ echo "::group::Build Info"
 
 time_start=$SECONDS
 
+echo "1 current time: $SECONDS"
+
 # Use make -p to get make's internal database and extract variables with flexible pattern
 make_output=$(make -p)
 version_core=$(echo "$make_output" | awk -F'= *' '/^VERSION .*/ {print $2}')
 library_name=$(echo "$make_output" | awk -F'= *' '/^LIBNAME .*/ {print $2}')
+
+echo "2 current time: $SECONDS"
 
 # If a new tag is pushed
 if [[ $GITHUB_REF == refs/tags/* ]]; then
@@ -37,6 +41,8 @@ fi
 artifact_name="${library_name}@${version}"
 artifact_path="/${artifact_name}"
 
+echo "3 current time: $SECONDS"
+
 # Use tee to write to the output file and stdout
 echo "version_core=${version_core}" | tee -a $GITHUB_OUTPUT
 echo "library_name=${library_name}" | tee -a $GITHUB_OUTPUT
@@ -45,7 +51,7 @@ echo "artifact_name=${artifact_name}" | tee -a $GITHUB_OUTPUT
 echo "artifact_path=${artifact_path}" | tee -a $GITHUB_OUTPUT
 
 time_end=$SECONDS
-echo "Time taken: $((time_end - time_start)) seconds"
+echo "Time taken: $(($time_end - $time_start)) seconds"
 
 echo "::endgroup::"
 echo "::group::Build"
@@ -61,7 +67,7 @@ make VERSION=${version} ${INPUT_BUILD_ARGS}
 
 time_end=$SECONDS
 
-echo "Build time: $((time_end - time_start)) seconds"
+echo "Build time: $(($time_end - $time_start)) seconds"
 
 echo "::endgroup::"
 

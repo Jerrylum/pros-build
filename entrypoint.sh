@@ -56,7 +56,7 @@ echo "Running build command: pros make all template VERSION=${version} ${build_a
 
 time_start=$SECONDS
 
-pros make all template VERSION=${version} ${build_args}
+make all template VERSION=${version} ${build_args}
 
 time_end=$SECONDS
 

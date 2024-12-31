@@ -50,8 +50,6 @@ echo "Time taken: $((time_end - time_start)) seconds"
 echo "::endgroup::"
 echo "::group::Build"
 
-echo "Running build command: pros make all template VERSION=${version} ${build_args}"
-
 # TODO: Add LICENSE, add README
 
 time_start=$SECONDS

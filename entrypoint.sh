@@ -56,7 +56,7 @@ STD_OUTPUT=$(mktemp)
 time_start=$(date +%s)
 
 make VERSION=${version} ${INPUT_BUILD_ARGS} | tee $STD_OUTPUT
-make_exit_code=$?
+make_exit_code=${PIPESTATUS[0]}
 
 time_end=$(date +%s)
 

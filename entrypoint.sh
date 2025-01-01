@@ -7,8 +7,12 @@ time_start=$(date +%s)
 version_core=$(cat Makefile | awk -F'= *' '/^VERSION.*=.*/ {print $2}')
 library_name=$(cat Makefile | awk -F'= *' '/^LIBNAME.*=.*/ {print $2}')
 
+is_tag_push=${GITHUB_REF#refs/tags/}
+pull_request_head_sha=$1
+echo "pull_request_head_sha: ${pull_request_head_sha}"
+
 # If a new tag is pushed
-if [[ $GITHUB_REF == refs/tags/* ]]; then
+if [[ $is_tag_push != "" ]]; then
   # Remove the 'v' prefix from the tag version
   tag_version="${GITHUB_REF#refs/tags/v}"
   # Check if version_core is the same as tag_version; if not, fail
@@ -16,7 +20,10 @@ if [[ $GITHUB_REF == refs/tags/* ]]; then
     echo "The version in the Makefile does not match the pushed tag version: ${version_core} != ${tag_version}"
     exit 1
   fi
+fi
 
+# If the build ID is not needed
+if [[ "${INPUT_ADD_BUILD_ID}" == "never" ]] || [[ "${INPUT_ADD_BUILD_ID}" == "except_tag" && ${is_tag_push} != "" ]]; then
   # Set the version to the version core without the 'v' prefix and the build identifier
   version=${version_core}
 else
@@ -24,10 +31,14 @@ else
   # $GITHUB_SHA might be the merge commit SHA, which is not preferred
   # See: https://stackoverflow.com/questions/68061051/get-commit-sha-in-github-actions
   # This should also work for forked pull requests
-  if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
-    GITHUB_SHA=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha)
+  if [[ "${INPUT_BUILD_ID}" != "" ]]; then
+    build_id=${INPUT_BUILD_ID}
+  elif [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+    build_id=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha)
+    build_id=${build_id:0:6}
+  else
+    build_id=${GITHUB_SHA:0:6}
   fi
-  build_id=${GITHUB_SHA:0:6}
 
   # Set the version to the tag version plus the build identifier
   version="${version_core}+${build_id}"
@@ -43,6 +54,7 @@ echo "artifact_name=${artifact_name}" | tee -a $GITHUB_OUTPUT
 echo "artifact_path=${artifact_path}" | tee -a $GITHUB_OUTPUT
 
 time_end=$(date +%s)
+
 echo "Time taken: $(($time_end - $time_start)) seconds"
 
 echo "::endgroup::"

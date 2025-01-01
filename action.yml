@@ -1,11 +1,21 @@
-# action.yml
 name: "PROS Build Action"
-description: "Greet someone and record the time"
+description: "Builds a PROS template"
+branding:
+  icon: 'package'
+  color: 'black'
 inputs:
-  build_args:
-    description: "The arguments to pass to the build command"
+  add_build_id:
+    description: "Determines when to include a build ID in the version string. Options are 'always', 'except_tag', or 'never'."
+    required: false
+    default: "except_tag"
+  build_id:
+    description: "Override the build ID in the version string. By default, the build ID is determined by latest pushed commit SHA."
     required: false
     default: ""
+  build_args:
+    description: "The arguments to pass to the build command `make $build_args`"
+    required: false
+    default: "quick"
 outputs:
   version_core:
     description: "The version name from the Makefile, for example 1.0.0"
@@ -16,8 +26,9 @@ outputs:
   artifact_name:
     description: 'The artifact name, for example "pros-template@1.0.0+123456"'
   artifact_path:
-    description: 'The path to the artifact, for example "/home/runner/artifacts/pros-template@1.0.0+123456"'
+    description: 'The path to the artifact, for example "./pros-template@1.0.0+123456"'
 runs:
   using: "docker"
   image: "docker://ghcr.io/jerrylum/pros-build:main" # TODO: change to the latest tag
-
+  args:
+    - ${{ github.event.pull_request.head.sha }}

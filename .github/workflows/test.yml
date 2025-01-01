@@ -29,7 +29,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          path: /actions
+          path: ./actions
 
       - name: Edit action.yml to use the local version of the action
         run: |
@@ -38,6 +38,6 @@ jobs:
 
       - name: Build template
         id: build
-        uses: /actions/
+        uses: ./actions/
         with:
           build_args: ${{ inputs.build_args }}

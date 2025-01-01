@@ -30,10 +30,9 @@ else
   if [[ "${INPUT_BUILD_ID}" != "" ]]; then
     build_id=${INPUT_BUILD_ID}
   elif [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
-    build_id=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha)
-    build_id=${build_id:0:6}
+    build_id=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha | cut -c1-6)
   else
-    build_id=${GITHUB_SHA:0:6}
+    build_id=$(echo "$GITHUB_SHA" | cut -c1-6)
   fi
 
   # Set the version to the tag version plus the build identifier

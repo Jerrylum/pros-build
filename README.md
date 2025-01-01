@@ -89,6 +89,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
+          if-no-files-found: error
           name: ${{ steps.build.outputs.artifact_name }}
           path: ${{ steps.build.outputs.artifact_path }}
 ```

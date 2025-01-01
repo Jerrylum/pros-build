@@ -33,7 +33,7 @@ else
   version="${version_core}+${build_id}"
 fi
 artifact_name="${library_name}@${version}"
-artifact_path="${artifact_name}"
+artifact_path="$(pwd)/${artifact_name}"
 
 # Use tee to write to the output file and stdout
 echo "version_core=${version_core}" | tee -a $GITHUB_OUTPUT
@@ -47,8 +47,6 @@ echo "Time taken: $(($time_end - $time_start)) seconds"
 
 echo "::endgroup::"
 echo "::group::Build"
-
-# TODO: Add LICENSE, add README
 
 time_start=$(date +%s)
 
@@ -65,5 +63,6 @@ echo "::endgroup::"
 echo "::group::Unzip Template"
 
 unzip ${artifact_name}.zip -d ${artifact_path}
+chmod -R a+rw ${artifact_path}
 
 echo "::endgroup::"

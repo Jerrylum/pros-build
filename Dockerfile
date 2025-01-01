@@ -13,12 +13,12 @@ RUN rm -rf /arm-none-eabi-toolchain/share
 RUN find /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/thumb -mindepth 1 -maxdepth 1 ! -name 'v7-a+fp' -exec rm -rf {} + 
 # Remove all thumb directories except v7-a+fp
 RUN find /arm-none-eabi-toolchain/arm-none-eabi/lib/thumb -mindepth 1 -maxdepth 1 ! -name 'v7-a+fp' -exec rm -rf {} +
+# Remove all thumb directories except v7-a*
+RUN find /arm-none-eabi-toolchain/arm-none-eabi/include/c++/13.3.1/arm-none-eabi/thumb -mindepth 1 -maxdepth 1 ! -name 'v7-a*' -exec rm -rf {} +
 # Remove duplicate gcc
 RUN rm /arm-none-eabi-toolchain/bin/arm-none-eabi-gcc-13.3.1
 # Remove gdb debugger
 RUN rm /arm-none-eabi-toolchain/bin/arm-none-eabi-gdb*
-
-# RUN find /arm-none-eabi-toolchain/arm-none-eabi/include/c++/13.3.1/arm-none-eabi/thumb -mindepth 1 -maxdepth 1 ! -name 'v7-a+fp' -exec rm -rf {} +
 
 # -- Install packages --
 FROM --platform=linux/amd64 alpine:latest AS runner

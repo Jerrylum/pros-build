@@ -44,7 +44,7 @@ jobs:
 
       - name: Edit action.yml to use the local version of the action
         run: |
-          sed -i "s|docker://ghcr.io/.*/pros-build:[^\']*|docker://${{ steps.load.outputs.tag }}|g" ./actions/action.yml
+          sed -i "s|docker://ghcr.io/.*/pros-build:\w*|docker://${{ steps.load.outputs.tag }}|g" ./actions/action.yml
           cat ./actions/action.yml
 
       - name: Build template

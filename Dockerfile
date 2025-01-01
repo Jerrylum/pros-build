@@ -25,7 +25,7 @@ FROM --platform=linux/amd64 alpine:latest AS runner
 
 # See: https://community.platformio.org/t/docker-alpine-linux-arm-none-eabi-gcc-not-found/30626/5
 RUN apk add --no-cache gcompat libc6-compat libstdc++
-RUN apk add --no-cache jq python3 pipx make
+RUN apk add --no-cache jq python3 pipx make bash
 
 RUN pipx install pros-cli==3.5.4
 ENV PATH="/root/.local/bin:$PATH"

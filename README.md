@@ -15,36 +15,11 @@ A GitHub Action for building PROS templates. This action uses a Docker container
 Add the following step to your GitHub Actions workflow:
 
 ```yaml
-name: Build Template
-
-on:
-  push:
-    branches: "**"
-    tags:
-      - "v*" # Trigger on version tags
-  pull_request:
-    branches: "**"
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Build template
-        id: build
-        uses: jerrylum/pros-build@1.0.0
-        with:
-          build_args: "quick template -j" # -j enables multi-threading
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ steps.build.outputs.artifact_name }}
-          path: ${{ steps.build.outputs.artifact_path }}
+- name: Build template
+  id: build
+  uses: jerrylum/pros-build@1.0.0
+  with:
+    build_args: "quick template -j" # -j enables multi-threading
 ```
 
 If you want to copy files such as `README.md` and `LICENSE` to the artifact before uploading, you can add the following steps after the build step:
@@ -84,6 +59,39 @@ If you want to copy files such as `README.md` and `LICENSE` to the artifact befo
 | `artifact_path` | Path to built artifact | `./template` |
 
 ## Example Workflow
+
+```yaml
+name: Build Template
+
+on:
+  push:
+    branches: "**"
+    tags:
+      - "v*" # Trigger on version tags
+  pull_request:
+    branches: "**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build template
+        id: build
+        uses: jerrylum/pros-build@1.0.0
+        with:
+          build_args: "quick template -j" # -j enables multi-threading
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.build.outputs.artifact_name }}
+          path: ${{ steps.build.outputs.artifact_path }}
+```
 
 ## Version Handling
 

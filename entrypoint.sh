@@ -7,10 +7,8 @@ time_start=$(date +%s)
 version_core=$(cat Makefile | awk -F'= *' '/^VERSION.*=.*/ {print $2}')
 library_name=$(cat Makefile | awk -F'= *' '/^LIBNAME.*=.*/ {print $2}')
 
-is_tag_push=${GITHUB_REF#refs/tags/}
-
 # If a new tag is pushed
-if [[ $is_tag_push != "" ]]; then
+if [[ $GITHUB_REF == "refs/tags/*" ]]; then
   # Remove the 'v' prefix from the tag version
   tag_version="${GITHUB_REF#refs/tags/v}"
   # Check if version_core is the same as tag_version; if not, fail
@@ -21,7 +19,7 @@ if [[ $is_tag_push != "" ]]; then
 fi
 
 # If the build ID is not needed
-if [[ "${INPUT_ADD_BUILD_ID}" == "never" ]] || [[ "${INPUT_ADD_BUILD_ID}" == "except_tag" && ${is_tag_push} != "" ]]; then
+if [[ "${INPUT_ADD_BUILD_ID}" == "never" ]] || [[ "${INPUT_ADD_BUILD_ID}" == "except_tag" && $GITHUB_REF == "refs/tags/*" ]]; then
   # Set the version to the version core without the 'v' prefix and the build identifier
   version=${version_core}
 else

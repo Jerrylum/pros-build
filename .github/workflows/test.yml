@@ -52,3 +52,10 @@ jobs:
         uses: ./actions/
         with:
           build_args: ${{ inputs.build_args }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.build.outputs.artifact_name }}
+          path: ${{ steps.build.outputs.artifact_path }}
+          retention-days: 89

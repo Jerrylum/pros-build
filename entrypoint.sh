@@ -2,8 +2,6 @@
 
 echo "::group::Project Info"
 
-time_start=$(date +%s)
-
 version_core=$(cat Makefile | awk -F'= *' '/^VERSION.*=.*/ {print $2}')
 library_name=$(cat Makefile | awk -F'= *' '/^LIBNAME.*=.*/ {print $2}')
 
@@ -48,28 +46,65 @@ echo "version=${version}" | tee -a $GITHUB_OUTPUT
 echo "artifact_name=${artifact_name}" | tee -a $GITHUB_OUTPUT
 echo "artifact_path=${artifact_path}" | tee -a $GITHUB_OUTPUT
 
-time_end=$(date +%s)
-
-echo "Time taken: $(($time_end - $time_start)) seconds"
-
 echo "::endgroup::"
 echo "::group::Build"
 
+# Print build args and build
+echo "build_args: ${INPUT_BUILD_ARGS}"
+STD_OUTPUT=$(mktemp)
+
 time_start=$(date +%s)
 
-echo "build_args: ${INPUT_BUILD_ARGS}"
-
-make VERSION=${version} ${INPUT_BUILD_ARGS}
+make VERSION=${version} ${INPUT_BUILD_ARGS} | tee $STD_OUTPUT
+make_exit_code=$?
 
 time_end=$(date +%s)
 
+# Print build time and exit code
 echo "Build time: $(($time_end - $time_start)) seconds"
+echo "Exit code: $make_exit_code"
+
+STD_EDITED_OUTPUT=$(mktemp)
+# Remove ANSI color codes from the output
+# https://stackoverflow.com/a/18000433
+sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g" $STD_OUTPUT >$STD_EDITED_OUTPUT
+
+if [ $make_exit_code -ne 0 ]; then
+  echo "Build failed with exit code $make_exit_code"
+
+  echo "
+# 🛑 Build Failed
+Build failed in $(($time_end - $time_start)) seconds
+<details><summary>Error Output (Click to expand)</summary>   
+
+\`\`\`
+$(cat $STD_EDITED_OUTPUT)
+\`\`\`
+
+</details>" >>$GITHUB_STEP_SUMMARY
+  exit $make_exit_code
+else
+  echo "
+# ✅ Build Succeeded
+Version: ${version}
+Build time: $(($time_end - $time_start)) seconds
+<details><summary>Build Output (Click to expand)</summary>
+
+\`\`\`
+$(cat $STD_EDITED_OUTPUT)
+\`\`\`
+
+</details>" >>$GITHUB_STEP_SUMMARY
+fi
 
 echo "::endgroup::"
 
-echo "::group::Unzip Template"
+# Unzip template if it exists
+if [ -f "${artifact_name}.zip" ]; then
+  echo "::group::Unzip Template"
 
-unzip ${artifact_name}.zip -d ${artifact_path}
-chmod -R a+rw ${artifact_path}
+  unzip ${artifact_name}.zip -d ${artifact_path}
+  chmod -R a+rw ${artifact_path}
 
-echo "::endgroup::"
+  echo "::endgroup::"
+fi

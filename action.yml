@@ -1,5 +1,6 @@
 name: "PROS Build Action"
 description: "Builds a PROS template"
+author: "Jerry Lum"
 branding:
   icon: 'package'
   color: 'black'

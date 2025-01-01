@@ -38,6 +38,6 @@ jobs:
 
       - name: Build template
         id: build
-        uses: /actions
+        uses: /actions/
         with:
           build_args: ${{ inputs.build_args }}

@@ -75,10 +75,10 @@ jobs:
         include:
           - repository: lemlib/lemlib
             ref: stable
-            build_args: "quick template"
+            build_args: "quick template -j"
           - repository: EZ-Robotics/EZ-Template
             ref: v3.0.1
-            build_args: "quick template"
+            build_args: "quick template -j"
     uses: ./.github/workflows/test.yml
     with:
       repository: ${{ matrix.repository }}
@@ -124,6 +124,10 @@ jobs:
             echo "$tag"
             docker push "$tag"
           done
+
+      # Add a small delay to ensure the image is available
+      - name: Wait for image to be available
+        run: sleep 10
 
       # This step generates an artifact attestation for the image, which is an unforgeable statement about where and how it was built. It increases supply chain security for people who consume the image. For more information, see "[AUTOTITLE](/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds)."
       - name: Generate artifact attestation

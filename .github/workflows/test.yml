@@ -1,0 +1,43 @@
+name: Test Action
+
+on:
+  workflow_call:
+    inputs:
+      repository:
+        description: "The repository to test"
+        required: true
+        type: string
+      ref:
+        description: "The branch or tag to test"
+        required: false
+        type: string
+      build_args:
+        description: "The build arguments to pass to the build command"
+        required: false
+        type: string
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.ref }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: /actions
+
+      - name: Edit action.yml to use the local version of the action
+        run: |
+          sed -i 's|docker://ghcr.io/jerrylum/pros-build:[^[:space:]]*|Dockerfile|g' /actions/action.yml
+          cat /actions/action.yml
+
+      - name: Build template
+        id: build
+        uses: /actions
+        with:
+          build_args: ${{ inputs.build_args }}

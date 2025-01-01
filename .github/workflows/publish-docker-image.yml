@@ -18,6 +18,9 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
       # https://github.com/docker/setup-buildx-action
@@ -65,6 +68,7 @@ jobs:
       digest: ${{ steps.build.outputs.digest }}
 
   test-action:
+    needs: [build-image]
     strategy:
       fail-fast: true
       matrix:

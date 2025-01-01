@@ -30,5 +30,3 @@ outputs:
 runs:
   using: "docker"
   image: "docker://ghcr.io/jerrylum/pros-build:main" # TODO: change to the latest tag
-  args:
-    - ${{ github.event.pull_request.head.sha }}

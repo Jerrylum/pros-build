@@ -8,8 +8,6 @@ version_core=$(cat Makefile | awk -F'= *' '/^VERSION.*=.*/ {print $2}')
 library_name=$(cat Makefile | awk -F'= *' '/^LIBNAME.*=.*/ {print $2}')
 
 is_tag_push=${GITHUB_REF#refs/tags/}
-pull_request_head_sha=$1
-echo "pull_request_head_sha: ${pull_request_head_sha}"
 
 # If a new tag is pushed
 if [[ $is_tag_push != "" ]]; then

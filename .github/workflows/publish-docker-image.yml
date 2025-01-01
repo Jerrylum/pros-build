@@ -68,7 +68,7 @@ jobs:
       tags: ${{ steps.meta.outputs.tags }}
       digest: ${{ steps.build.outputs.digest }}
 
-  test-action:
+  test-with-existing-template:
     needs: [build-image]
     strategy:
       fail-fast: true
@@ -80,7 +80,7 @@ jobs:
           - repository: EZ-Robotics/EZ-Template
             ref: v3.0.1
             build_args: "quick template -j"
-    uses: ./.github/workflows/test.yml
+    uses: ./.github/workflows/test-with-existing-template.yml
     with:
       repository: ${{ matrix.repository }}
       ref: ${{ matrix.ref }}
@@ -88,7 +88,7 @@ jobs:
 
   push-image:
     if: ${{ github.event_name != 'pull_request' }}
-    needs: [build-image, test-action]
+    needs: [build-image, test-with-existing-template]
     runs-on: ubuntu-latest
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:

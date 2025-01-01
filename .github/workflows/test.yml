@@ -45,7 +45,7 @@ jobs:
       - name: Edit action.yml to use the local version of the action
         run: |
           sed -i 's|docker://ghcr.io/jerrylum/pros-build:[^[:space:]]*|Dockerfile|g' ./actions/action.yml
-          cat /actions/action.yml
+          cat ./actions/action.yml
 
       - name: Build template
         id: build

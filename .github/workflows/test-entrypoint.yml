@@ -38,9 +38,9 @@ jobs:
           echo "VERSION=1.0.0" > Makefile
           echo "LIBNAME=pros-template" >> Makefile
           if [ "${{ matrix.make_success }}" = "true" ]; then
-            echo "all:\n\techo 'Build successful'" > Makefile
+            printf "all:\n\techo 'Build successful'\n" > Makefile
           else
-            echo "all:\n\texit 1" > Makefile
+            printf "all:\n\texit 1" > Makefile
           fi
 
       - name: Mock Run Entrypoint

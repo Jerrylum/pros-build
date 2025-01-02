@@ -99,6 +99,8 @@ $(cat $STD_EDITED_OUTPUT)
 </details>" >>$GITHUB_STEP_SUMMARY
 fi
 
+echo "make_exit_code=${make_exit_code}" | tee -a $GITHUB_OUTPUT
+
 echo "::endgroup::"
 
 # Unzip template if it exists

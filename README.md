@@ -114,12 +114,10 @@ The build ID (when enabled) is determined as follows:
 
 ## Release Workflow
 
-We recommend pushing a tag before releasing a new version. This approach allows you to run the build action on the tag, ensuring that the build is successful and the artifact is ready before creating a release. Follow these steps for a smooth release process:
+It is recommended to push a tag before releasing a new version. This approach allows you to run the build action on the tag, ensuring that the build is successful and the artifact is ready before creating a release. Follow these steps for a smooth release process:
 
 1. **Push a Tag**: Create and push a tag that corresponds to the new version you want to release. This will trigger the build action to run on the tagged commit.
 
 2. **Verify Build**: Ensure that the build action completes successfully. The action will validate that the version in your Makefile matches the tag version, and it will produce an artifact.
 
 3. **Create a Release**: Once the build is verified, create a new release in GitHub using the artifact generated from the tagged build. This ensures that the release is consistent with the code and build outputs.
-
-By following this workflow, you can maintain consistency between your codebase, build artifacts, and releases.

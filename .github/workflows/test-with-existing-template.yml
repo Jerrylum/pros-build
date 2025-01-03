@@ -31,20 +31,20 @@ jobs:
         with:
           path: ./actions
 
-      - name: Download Artifact
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: image.tar
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Load Image
+      - name: Load image
         id: load
         run: |
           echo "tag=$(docker load -i ./image.tar | grep -oP 'Loaded image: \K.*' | head -n 1)" > $GITHUB_OUTPUT
 
       - name: Edit action.yml to use the local version of the action
         run: |
-          sed -i "s|docker://ghcr.io/.*/pros-build:\w*|docker://${{ steps.load.outputs.tag }}|g" ./actions/action.yml
+          sed -i "s|docker://ghcr.io/.*/pros-build:[^\"]*|docker://${{ steps.load.outputs.tag }}|g" ./actions/action.yml
           cat ./actions/action.yml
 
       - name: Build template

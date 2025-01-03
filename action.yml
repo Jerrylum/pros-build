@@ -2,8 +2,8 @@ name: "PROS Build Action"
 description: "Builds a PROS template"
 author: "Jerry Lum"
 branding:
-  icon: 'package'
-  color: 'black'
+  icon: "package"
+  color: "black"
 inputs:
   add_build_id:
     description: "Determines when to include a build ID in the version string. Options are 'always', 'except_tag', or 'never'."
@@ -29,7 +29,7 @@ outputs:
   artifact_path:
     description: 'The path to the artifact, for example "./pros-template@1.0.0+123456"'
   make_exit_code:
-    description: 'The exit code from the make command'
+    description: "The exit code from the make command"
 runs:
   using: "docker"
-  image: "docker://ghcr.io/jerrylum/pros-build:main" # TODO: change to the latest tag
+  image: "docker://ghcr.io/jerrylum/pros-build:1.0.0"

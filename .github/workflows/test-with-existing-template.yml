@@ -31,13 +31,13 @@ jobs:
         with:
           path: ./actions
 
-      - name: Download Artifact
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: image.tar
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Load Image
+      - name: Load image
         id: load
         run: |
           echo "tag=$(docker load -i ./image.tar | grep -oP 'Loaded image: \K.*' | head -n 1)" > $GITHUB_OUTPUT

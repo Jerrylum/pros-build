@@ -52,6 +52,8 @@ jobs:
         uses: ./actions/
         with:
           build_args: ${{ inputs.build_args }}
+        env:
+          GITHUB_REF: ${{ inputs.ref }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

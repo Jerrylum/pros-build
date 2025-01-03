@@ -42,7 +42,7 @@ jobs:
             printf "all:\n\texit 1\n" >> Makefile
           fi
 
-      - name: Mock Run Entrypoint
+      - name: Mock run entrypoint
         id: run
         run: |
           export GITHUB_SHA=123456789
@@ -58,7 +58,7 @@ jobs:
           INPUT_BUILD_ID: ${{ matrix.build_id }}
           INPUT_BUILD_ARGS: "all"
 
-      - name: Check Outputs
+      - name: Check outputs
         run: |
           echo "Version Core: ${{ steps.run.outputs.version_core }}"
           echo "Library Name: ${{ steps.run.outputs.library_name }}"

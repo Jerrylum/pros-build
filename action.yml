@@ -32,4 +32,4 @@ outputs:
     description: 'The exit code from the make command'
 runs:
   using: "docker"
-  image: "docker://ghcr.io/jerrylum/pros-build:main" # TODO: change to the latest tag
+  image: "docker://ghcr.io/jerrylum/pros-build:1.0.0"

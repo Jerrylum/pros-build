@@ -28,6 +28,8 @@ outputs:
     description: 'The artifact name, for example "pros-template@1.0.0+123456"'
   artifact_path:
     description: 'The path to the artifact, for example "./pros-template@1.0.0+123456"'
+  make_exit_code:
+    description: 'The exit code from the make command'
 runs:
   using: "docker"
   image: "docker://ghcr.io/jerrylum/pros-build:main" # TODO: change to the latest tag

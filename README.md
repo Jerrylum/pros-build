@@ -57,6 +57,15 @@ If you want to copy files such as `README.md` and `LICENSE` to the artifact befo
 | `version` | Full version string | `1.0.0+123456` |
 | `artifact_name` | Name of built artifact | `pros-template@1.0.0+123456` |
 | `artifact_path` | Path to built artifact | `./template` |
+| `make_exit_code` | Exit code from make command | `0` |
+
+### Artifact Path
+
+The artifact path is the path to the built artifact. This should be the "template" directory under the `GITHUB_WORKSPACE`. Note that it only exists when building a template by including `template` in the `build_args`.
+
+### Exit Code
+
+The exit code from the make command is provided as an output. This can be used to determine if the build was successful.
 
 ## Example Workflow
 
@@ -103,3 +112,14 @@ The build ID (when enabled) is determined as follows:
 2. Uses PR head commit SHA (first 6 characters) for pull requests
 3. Falls back to workflow commit SHA (first 6 characters)
 
+## Release Workflow
+
+We recommend pushing a tag before releasing a new version. This approach allows you to run the build action on the tag, ensuring that the build is successful and the artifact is ready before creating a release. Follow these steps for a smooth release process:
+
+1. **Push a Tag**: Create and push a tag that corresponds to the new version you want to release. This will trigger the build action to run on the tagged commit.
+
+2. **Verify Build**: Ensure that the build action completes successfully. The action will validate that the version in your Makefile matches the tag version, and it will produce an artifact.
+
+3. **Create a Release**: Once the build is verified, create a new release in GitHub using the artifact generated from the tagged build. This ensures that the release is consistent with the code and build outputs.
+
+By following this workflow, you can maintain consistency between your codebase, build artifacts, and releases.

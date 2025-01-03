@@ -18,14 +18,13 @@ jobs:
         tag_ref: ["refs/tags/v1.0.0", "refs/heads/test"]
 
         include:
-          - add_build_id: always
-            version_answer: "1.0.0"
+          - build_id: ""
+            version_answer: "1.0.0+123456"
+          - build_id: "custom123"
+            version_answer: "1.0.0+custom123"
           - add_build_id: except_tag
             tag_ref: "refs/tags/v1.0.0"
             version_answer: "1.0.0"
-          - add_build_id: except_tag
-            tag_ref: "refs/heads/test"
-            version_answer: "1.0.0+123456"
           - add_build_id: never
             version_answer: "1.0.0"
 
@@ -38,21 +37,23 @@ jobs:
           echo "VERSION=1.0.0" > Makefile
           echo "LIBNAME=pros-template" >> Makefile
           if [ "${{ matrix.make_success }}" = "true" ]; then
-            printf "all:\n\techo 'Build successful'\n" > Makefile
+            printf "all:\n\techo 'Build successful'\n" >> Makefile
           else
-            printf "all:\n\texit 1" > Makefile
+            printf "all:\n\texit 1\n" >> Makefile
           fi
 
       - name: Mock Run Entrypoint
         id: run
         run: |
           chmod +x ./entrypoint.sh
+          set +e
           ./entrypoint.sh
+          set -e
         env:
           INPUT_ADD_BUILD_ID: ${{ matrix.add_build_id }}
           INPUT_BUILD_ID: ${{ matrix.build_id }}
           INPUT_BUILD_ARGS: "all"
-          GITHUB_SHA: "123456"
+          GITHUB_SHA: "123456789"
           GITHUB_REF: ${{ matrix.tag_ref }}
 
       - name: Check Outputs

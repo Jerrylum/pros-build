@@ -5,8 +5,8 @@ echo "::group::Project Info"
 version_core=$(cat Makefile | awk -F'= *' '/^VERSION.*=.*/ {print $2}')
 library_name=$(cat Makefile | awk -F'= *' '/^LIBNAME.*=.*/ {print $2}')
 
-# If a new tag is pushed
-if [[ $GITHUB_REF =~ ^refs/tags/v ]]; then
+# If a new tag is pushed and it is not in integration test
+if [[ $GITHUB_REF =~ ^refs/tags/v && -z "$__INTEGRATION_TEST" ]]; then
   # Remove the 'v' prefix from the tag version
   tag_version="${GITHUB_REF#refs/tags/v}"
   # Check if version_core is the same as tag_version; if not, fail

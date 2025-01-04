@@ -52,6 +52,9 @@ jobs:
         uses: ./actions/
         with:
           build_args: ${{ inputs.build_args }}
+          add_build_id: never
+        env:
+          __INTEGRATION_TEST: true
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

@@ -48,6 +48,7 @@ jobs:
           export GITHUB_SHA=123456789
           export GITHUB_REF=${{ matrix.tag_ref }}
           export GITHUB_EVENT_NAME="not-pull_request"
+          unset __INTEGRATION_TEST
 
           chmod +x ./entrypoint.sh
           set +e

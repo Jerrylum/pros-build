@@ -1,4 +1,4 @@
-name: "PROS Build Action"
+name: "PROS Build"
 description: "Builds a PROS template"
 author: "Jerry Lum"
 branding:

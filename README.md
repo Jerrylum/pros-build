@@ -1,4 +1,4 @@
-# PROS Build Action
+# PROS Build Template
 
 A GitHub Action for building PROS templates. This action uses a Docker container with the PROS CLI and ARM GCC toolchain to build your PROS project.
 
@@ -17,7 +17,7 @@ Add the following step to your GitHub Actions workflow:
 ```yaml
 - name: Build template
   id: build
-  uses: jerrylum/pros-build@1.0.0
+  uses: jerrylum/pros-build@v1.0.0
   with:
     build_args: "quick template -j" # -j enables multi-threading
 ```
@@ -91,7 +91,7 @@ jobs:
 
       - name: Build template
         id: build
-        uses: jerrylum/pros-build@1.0.0
+        uses: jerrylum/pros-build@v1.0.0
         with:
           build_args: "quick template -j" # -j enables multi-threading
 

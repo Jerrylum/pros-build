@@ -17,7 +17,7 @@ Add the following step to your GitHub Actions workflow:
 ```yaml
 - name: Build template
   id: build
-  uses: jerrylum/pros-build@v1.0.0
+  uses: jerrylum/pros-build@v2.0.0
   with:
     build_args: "quick template -j" # -j enables multi-threading
 ```
@@ -91,7 +91,7 @@ jobs:
 
       - name: Build template
         id: build
-        uses: jerrylum/pros-build@v1.0.0
+        uses: jerrylum/pros-build@v2.0.0
         with:
           build_args: "quick template -j" # -j enables multi-threading
 

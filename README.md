@@ -109,7 +109,7 @@ When building from a tag (e.g., `v1.0.0`), the action will verify that the versi
 
 The build ID (when enabled) is determined as follows:
 1. Uses custom `build_id` if provided
-2. Uses PR head commit SHA (first 6 characters) for pull requests
+2. Uses PR number and PR head commit SHA (first 6 characters) for pull requests, for example `pr123-123456`
 3. Falls back to workflow commit SHA (first 6 characters)
 
 ## Release Workflow

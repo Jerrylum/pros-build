@@ -28,7 +28,9 @@ else
   if [[ "${INPUT_BUILD_ID}" != "" ]]; then
     build_id=${INPUT_BUILD_ID}
   elif [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
-    build_id=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha | cut -c1-6)
+    pr_num=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.number)
+    commit_sha=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha | cut -c1-6)
+    build_id="pr${pr_num}-${commit_sha}"
   else
     build_id=$(echo "$GITHUB_SHA" | cut -c1-6)
   fi
